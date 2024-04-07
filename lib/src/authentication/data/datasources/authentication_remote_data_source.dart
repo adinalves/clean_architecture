@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:tutor4you/core/erros/exceptions.dart';
 import 'package:tutor4you/core/utils/constants.dart';
 import 'package:tutor4you/core/utils/typedef.dart';
@@ -35,12 +36,14 @@ class AuthRemoteDataSrc implements AuthenticationRemoteDataSource {
     try {
       final response =
           await _client.post(Uri.https(kBaseUrl, kCreateUserEndPoint),
-              body: jsonEncode({
-                'createdAt': createdAt,
-                'name': name,
-                'avatar': avatar,
-              }));
-
+              body: jsonEncode(
+                {
+                  'createdAt': createdAt,
+                  'name': name,
+                  'avatar': avatar,
+                },
+              ),
+              headers: {'Content-Type': 'application/json'});
       if (response.statusCode != 200 && response.statusCode != 201) {
         throw ApiException(
           message: response.body,

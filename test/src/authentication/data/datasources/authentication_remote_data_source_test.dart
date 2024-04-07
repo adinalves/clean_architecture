@@ -21,8 +21,11 @@ void main() {
   group('createUser', () {
     test('should complety sucessfully when status code is 200 or 201',
         () async {
-      when(() => client.post(any(), body: any(named: 'body'))).thenAnswer(
-          (_) async => http.Response('User created  sucessfully', 201));
+      when(() => client.post(any(),
+              body: any(named: 'body'),
+              headers: {'Content-Type': 'application/json'}))
+          .thenAnswer(
+              (_) async => http.Response('User created  sucessfully', 201));
 
       final methodCall = remoteDataSource.createUser;
 
@@ -39,13 +42,16 @@ void main() {
             'createdAt': 'createdAt',
             'name': 'name',
             'avatar': 'avatar',
-          }))).called(1);
+          }),
+          headers: {'Content-Type': 'application/json'})).called(1);
       verifyNoMoreInteractions(client);
     });
 
     test('should throw [ApiException] when the status code is not 200 or 201',
         () async {
-      when(() => client.post(any(), body: any(named: 'body')))
+      when(() => client.post(any(),
+              body: any(named: 'body'),
+              headers: {'Content-Type': 'application/json'}))
           .thenAnswer((_) async => http.Response('Invalid email address', 400));
 
       final methodCall = remoteDataSource.createUser;
@@ -66,7 +72,8 @@ void main() {
             'createdAt': 'createdAt',
             'name': 'name',
             'avatar': 'avatar',
-          }))).called(1);
+          }),
+          headers: {'Content-Type': 'application/json'})).called(1);
       verifyNoMoreInteractions(client);
     });
   });
